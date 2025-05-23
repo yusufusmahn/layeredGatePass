@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Residents implements ResidentRepository {
-    private List<Resident> residents = new ArrayList<>();
     private int counter = 0;
+    private static List<Resident> residents = new ArrayList<>();
 
     @Override
     public Resident save(Resident resident) {
@@ -72,4 +72,21 @@ public class Residents implements ResidentRepository {
     public List<Resident> findAll() {
         return new ArrayList<>(residents);
     }
+
+    @Override
+    public void deleteAll() {
+        residents.clear();
+        counter = 0;
+    }
+
+    @Override
+    public Optional<Resident> findByEmail(String email) {
+        for (Resident resident : residents) {
+            if (resident.getEmail().equalsIgnoreCase(email)) {
+                return Optional.of(resident);
+            }
+        }
+        return Optional.empty();
+    }
+
 }

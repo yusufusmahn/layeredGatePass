@@ -12,4 +12,6 @@ public interface ResidentRepository {
     List<Resident> findAllByFullName(String fullName);
     long count();
     List<Resident> findAll();
+    void deleteAll();
+    Optional<Resident> findByEmail(String email);
 }

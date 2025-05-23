@@ -2,10 +2,9 @@ package utils;
 
 import data.models.Resident;
 import dtos.requests.RegisterResidentRequest;
-import dtos.responses.RegisterResidentResponse;
+import dtos.responses.FindResidentResponse;
 
 public class Mapper {
-
     public static Resident mapToResident(RegisterResidentRequest request) {
         Resident resident = new Resident();
         resident.setFullName(request.getFullName());
@@ -14,11 +13,15 @@ public class Mapper {
         return resident;
     }
 
-    public static RegisterResidentResponse mapToResponse(Resident resident) {
-        RegisterResidentResponse response = new RegisterResidentResponse();
+
+    public static FindResidentResponse mapToFindResponse(Resident resident) {
+        FindResidentResponse response = new FindResidentResponse();
         response.setResidentId(resident.getId());
         response.setFullName(resident.getFullName());
-        response.setMessage("Resident registered successfully");
+        response.setPhoneNumber(resident.getPhoneNumber());
+        response.setEmail(resident.getEmail());
         return response;
     }
+
+
 }

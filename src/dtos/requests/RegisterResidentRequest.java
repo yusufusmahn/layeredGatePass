@@ -4,6 +4,10 @@ public class RegisterResidentRequest {
     private String fullName;
     private String phoneNumber;
     private String email;
+    private String password;
+
+    public RegisterResidentRequest() {
+    }
 
     public String getFullName() {
         return fullName;
@@ -27,5 +31,13 @@ public class RegisterResidentRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

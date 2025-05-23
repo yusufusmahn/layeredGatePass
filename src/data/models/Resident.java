@@ -6,6 +6,7 @@ public class Resident {
     private String address;
     private String phoneNumber;
     private String email;
+    private String password;
 
     public int getId() {
         return id;
@@ -46,6 +47,18 @@ public class Resident {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean verifyPassword(String inputPassword) {
+        if (inputPassword == null) {
+            return false;
+        }
+        return inputPassword.equals(password);
+    }
+
 
     @Override
     public boolean equals(Object obj) {
