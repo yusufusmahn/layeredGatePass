@@ -4,6 +4,7 @@ import data.repository.ResidentRepository;
 import data.repository.Residents;
 import dtos.requests.LoginRequest;
 import dtos.requests.RegisterResidentRequest;
+import dtos.responses.FindResidentResponse;
 import dtos.responses.LoginResponse;
 import dtos.responses.RegisterResidentResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,4 +119,24 @@ public class ResidentServicesImplTest {
 
         assertThrows(IllegalArgumentException.class, () -> residentService.register(request));
     }
+
+
+    @Test
+    public void testFindById() {
+        RegisterResidentRequest request = new RegisterResidentRequest();
+        request.setFullName("yusuf usman");
+        request.setPhoneNumber("08169025216");
+        request.setEmail("yusuf.usman1003@gmail.com");
+        request.setPassword("12345678");
+        residentService.register(request);
+
+        FindResidentResponse response = residentService.findById(1);
+
+        assertNotNull(response);
+        assertEquals("yusuf usman", response.getFullName());
+        assertEquals("08169025216", response.getPhoneNumber());
+        assertEquals("yusuf.usman1003@gmail.com", response.getEmail());
+    }
+
+
 }
