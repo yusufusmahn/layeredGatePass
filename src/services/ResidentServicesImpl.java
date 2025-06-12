@@ -9,6 +9,7 @@ import dtos.responses.LoginResponse;
 import dtos.responses.RegisterResidentResponse;
 import utils.Mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ResidentServicesImpl implements ResidentServices {
@@ -30,27 +31,17 @@ public class ResidentServicesImpl implements ResidentServices {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
 
-
         Optional<Resident> existingResident = residentRepository.findByEmail(registerResidentRequest.getEmail());
         if (existingResident.isPresent()) {
-            RegisterResidentResponse response = new RegisterResidentResponse();
-            response.setSuccess(false);
-            response.setMessage("Email already exists: " + registerResidentRequest.getEmail());
-            response.setResidentId(0);
-            response.setFullName(null);
-            return response;
+            throw new IllegalArgumentException("Email already exists: " + registerResidentRequest.getEmail());
         }
 
         Resident resident = Mapper.mapToResident(registerResidentRequest);
         resident.setPassword(registerResidentRequest.getPassword());
         Resident savedResident = residentRepository.save(resident);
 
-
-        RegisterResidentResponse response = new RegisterResidentResponse();
-        response.setSuccess(true);
+        RegisterResidentResponse response = Mapper.createRegisterResidentResponse(savedResident);
         response.setMessage("Resident registered successfully");
-        response.setResidentId(savedResident.getId());
-        response.setFullName(savedResident.getFullName());
         return response;
     }
 
@@ -79,16 +70,16 @@ public class ResidentServicesImpl implements ResidentServices {
                 .orElseThrow(() -> new IllegalArgumentException("Resident with email " + loginRequest.getEmail() + " not found"));
 
         if (!foundResident.verifyPassword(loginRequest.getPassword())) {
-            LoginResponse response = new LoginResponse();
-            response.setSuccess(false);
-            response.setMessage("Invalid password");
-            return response;
+            throw new IllegalArgumentException("Invalid password");
         }
 
-        LoginResponse response = new LoginResponse();
-        response.setSuccess(true);
+        LoginResponse response = Mapper.createLoginResponse(foundResident);
         response.setMessage("Login successful");
-        response.setResidentId(foundResident.getId());
         return response;
+    }
+
+    @Override
+    public List<FindResidentResponse> findAll() {
+        return Mapper.mapToFindResponseList(residentRepository.findAll());
     }
 }
